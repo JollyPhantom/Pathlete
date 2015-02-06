@@ -10,7 +10,6 @@ var findOneAndRemove    = Q.nbind(User.findOneAndRemove, User);
 var findById            = Q.nbind(User.findById, User);
 var createUser          = Q.nbind(User.create, User);
 
-
 var controller = {};
 
 controller.getTournaments = function(req, res, next) {
@@ -97,7 +96,6 @@ var exports = {
         user.strideRunning = profile._json.user.strideLengthRunning;
         user.strideWalking = profile._json.user.strideLengthWalking;
         user.units = profile._json.user.distanceUnit;
-        //if user is not already in the db
         db.child('users').child(profile.id).set(user);
       } else {
         //if user is already in db, update their profile info
@@ -107,15 +105,12 @@ var exports = {
   },
   
   getUserStats: function (userID, callback) {
-    //take user id and query the firebase database
     return db.child('users').child(userID);
   },
   
-  //add user activity, such as stairs and steps to their profile in the db
   addUserStats: function (userID, userStats) {
     db.child('users').child(userID).child('stats').update(JSON.parse(userStats));
   }
-
 };
 
 module.exports = controller;
