@@ -36,7 +36,6 @@ tournaments.read = function(req, res, next) {
   if ( id ) {
     findById(id)
       .then(function(tournament){
-        console.log(tournament);
         res.send(tournament);
       })
       .catch(function(error){
@@ -141,10 +140,8 @@ tournaments.inviteHandler = function(req, res, next){
 
 tournaments.update = function(req, res, next){
   var updatedTournament = req.body;
-  console.log('inside update, req.body :', req.body);
   var query = {_id: req.params.tournament_id};
   findOneAndUpdate(query, updatedTournament, function(error, data){
-    console.log('in callback; data : ', data );
     if (error) {
       res.send(error);
     } else {
@@ -166,8 +163,6 @@ tournaments.testDel = function(req, res, next){
 };
 
 tournaments.delete = function(req, res, next){
-  console.log('in delete: req.params : ', req.params);
-  console.log('type of req.params.t_id : ', typeof req.params.tournament_id.toObjectId);
   var query = {_id: ObjectId(req.params.tournament_id)};
   console.log(query);
   findOne({name : 'book'})
@@ -254,5 +249,4 @@ tournaments.end = function(req, res, next){
     //  -remove t_id from active if active
     //  -remove from Pending, or Active;
 }
-
 module.exports = tournaments;
