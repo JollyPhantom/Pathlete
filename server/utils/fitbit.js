@@ -2,6 +2,7 @@ var FitbitStrategy = require('passport-fitbit').Strategy;
 var FitbitApiClient = require('fitbit-node');
 var passport = require('passport');
 var Users =require('../users/controller.js');
+var User = require('../users/model.js');
 
 console.log(Users);
 
@@ -40,17 +41,19 @@ module.exports = exports = {
     var id = req.params.id;
     var start = req.params.start;
     var end = req.params.end;
-    var token = req.body.token;
-    var secret = req.body.tokenSecret;
-    var client = new FitbitApiClient(process.env.CONSUMER_KEY, process.env.CONSUMER_SECRET);
-    //creates the request to get activites json from fitbit
-    return client.requestResource('/activities/steps/date/'+start+'/'+end+'.json', 'GET', token, secret, id).then(function (data) {  
-        //success handler for req, return the promise
-        console.log('testttttttttttttttttt', data)
-        res.send(data);
-      }, function (err) {
-        console.log('ERROR!',err);
-      });
+    User.find({user_id:id},function(data){
+      var token = data.token;
+      var secret = data.tokenSecret;
+      var client = new FitbitApiClient(process.env.CONSUMER_KEY, process.env.CONSUMER_SECRET);
+      //creates the request to get activites json from fitbit
+      return client.requestResource('/activities/steps/date/'+start+'/'+end+'.json', 'GET', token, secret, id).then(function (data) {  
+          //success handler for req, return the promise
+          console.log('testttttttttttttttttt', data)
+          res.send(data);
+        }, function (err) {
+          console.log('ERROR!',err);
+        });      
+    })
   }
 
   // Currently migrating the API request to the client side
