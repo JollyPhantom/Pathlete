@@ -2,6 +2,7 @@
 var Q       = require('q');
 var User    = require('../users/model.js');
 var Tournaments = require('../tournaments/model.js');
+var Fitbit = require('../utils/fitbit.js');
 
 //Mongoose methods, promisified
 var findOneUser         = Q.nbind(User.findOne, User);
@@ -92,5 +93,18 @@ controller.addUserStats = function(userID, userStats) {
       }
     })
 };
+
+controller.getStepsBetweenDates = function(req, res, next){
+  var id = req.params.id;
+  var start = req.params.start;
+  var end = req.params.end;
+  var token = req.body.token;
+  var secret = req.body.tokenSecret;
+
+  Fitbit.getStatsBetweenDates(userID, token, secret, start, end, function(data){
+    res.send(data);
+  })
+
+}
 
 module.exports = controller;

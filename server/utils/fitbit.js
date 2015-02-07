@@ -26,9 +26,22 @@ module.exports = exports = {
   getStats: function (userID, token, secret) {
     var client = new FitbitApiClient(process.env.CONSUMER_KEY, process.env.CONSUMER_SECRET);
     //creates the request to get activites json from fitbit
-    return client.requestResource('/activities.json', 'GET', token, secret).then(function (data) {  
+    return client.requestResource('/activities.json', 'GET', token, secret, userID).then(function (data) {  
         //success handler for req, return the promise
+        console.log('testttttttttttttttttt', data)
         Users.addUserStats(userID,data[0]);
+      }, function (err) {
+        console.log('ERROR!',err);
+      });
+  },
+
+  getStatsBetweenDates: function (userID, token, secret, start, end, done) {
+    var client = new FitbitApiClient(process.env.CONSUMER_KEY, process.env.CONSUMER_SECRET);
+    //creates the request to get activites json from fitbit
+    return client.requestResource('/activities/steps/date/'+start+'/'+end+'.json', 'GET', token, secret, userID).then(function (data) {  
+        //success handler for req, return the promise
+        console.log('testttttttttttttttttt', data)
+        done(data);
       }, function (err) {
         console.log('ERROR!',err);
       });

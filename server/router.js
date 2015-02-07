@@ -52,6 +52,8 @@ router.get('/api/users/:user_id/tournaments', Users.getTournaments); //body: act
 // User get all users 
 router.get('/api/users', Users.getAllUsers); //body: action: public or private;
 
+router.get('/api/users/:id/:start/:end', Users.getStepsBetweenDates)
+
 // Tournament FitBit Data
 // router.get('/api/tournaments/:tournament_id/fitbit-stats', FitBitControl.getStepsBetweenDates);
 
