@@ -3,6 +3,8 @@ var FitbitApiClient = require('fitbit-node');
 var passport = require('passport');
 var Users =require('../users/controller.js');
 
+console.log(Users);
+
 module.exports = exports = {
   fitbitStrategy: new FitbitStrategy({
       consumerKey: process.env.CONSUMER_KEY,
@@ -29,6 +31,23 @@ module.exports = exports = {
     return client.requestResource('/activities.json', 'GET', token, secret).then(function (data) {  
         //success handler for req, return the promise
         Users.addUserStats(userID,data[0]);
+      }, function (err) {
+        console.log('ERROR!',err);
+      });
+  },
+
+  getStatsBetweenDates: function (req,res,next) {
+    var id = req.params.id;
+    var start = req.params.start;
+    var end = req.params.end;
+    var token = req.body.token;
+    var secret = req.body.tokenSecret;
+    var client = new FitbitApiClient(process.env.CONSUMER_KEY, process.env.CONSUMER_SECRET);
+    //creates the request to get activites json from fitbit
+    return client.requestResource('/activities/steps/date/'+start+'/'+end+'.json', 'GET', token, secret, id).then(function (data) {  
+        //success handler for req, return the promise
+        console.log('testttttttttttttttttt', data)
+        res.send(data);
       }, function (err) {
         console.log('ERROR!',err);
       });

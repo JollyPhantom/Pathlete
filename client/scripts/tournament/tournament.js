@@ -82,7 +82,6 @@ angular.module('fm.tournament', [])
         for(var j = 0; j < datedValues.length ; j++){
           result.push(total += datedValues[j][1]);
         }
-        console.log(result);
         return result;
       }
 
@@ -148,7 +147,6 @@ angular.module('fm.tournament', [])
       scope.mockName4 = 'Wayne';
 
       var docWidth = $(document).find('#tournamentChart').width()*.8;
-      console.log(docWidth);
 
       scope.chart = c3.generate({
         bindto: '#tournamentChart',
@@ -178,7 +176,6 @@ angular.module('fm.tournament', [])
       }, 4000);
 
       var onlySVG = $('svg');
-      console.log(onlySVG);
     }
   }
 });
